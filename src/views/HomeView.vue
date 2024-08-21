@@ -2,6 +2,7 @@
 import baseurl from '@/api';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ref, onMounted } from "vue";
 import { marked } from 'marked';
 
@@ -25,18 +26,30 @@ const loading = ref(true)
 
 const pdfsend = ref(false)
 
+const spin = ref(false)
+const sendicon = ref(true)
+
+const pdftake = ref(false)
+
 const formdata = new FormData()
 gsap.registerPlugin(TextPlugin)
+gsap.registerPlugin(ScrollToPlugin);
 
 async function getPrompt() {
   if (prompt.value.length >= 1) {
     sidePrompt.value = prompt.value;
     loading.value = true;
     pdfsend.value = false;
+
+    spin.value = true;
+    sendicon.value = false;
     try {
       const res = await baseurl.post(`/ai/prompt`, {
         prompt: prompt.value,
       });
+      prompt.value = ""
+      spin.value = false;
+      sendicon.value = true;
       noPrompt.value = false;
       promptedPage.value = true;
       loading.value = false;
@@ -47,9 +60,11 @@ async function getPrompt() {
       answerspace.innerHTML = "";
       //@ts-ignore
       gsap.to(answerspace, { duration: 10, text: answerPrompt.value })
-      window.scrollTo(0, 0)
+      gsap.to(window, { duration: 1, scrollTo: document.body.scrollHeight });
     } catch (err) {
       console.log(err);
+      spin.value = false;
+      sendicon.value = true;
       noPrompt.value = false;
       promptedPage.value = true;
       answerPrompt.value = "An error Occured";
@@ -65,17 +80,22 @@ const triggerUpload = () => {
   fileInput.value.click()
 }
 
-const selectedFile = async (e: any) => {
+const selectedFile = (e: any) => {
+  if (formdata.get('file') !== null) {
+    formdata.delete('file');
+  }
   pdfFile.value = e.target.files[0]
   formdata.append("file", e.target.files[0])
   console.log(pdfFile.value)
   fileName.value = e.target.files[0].name
 
+  pdftake.value = true;
+
   if (prompt.value.length >= 1) {
     formdata.append("text", prompt.value)
-  } else {
-    return null
   }
+
+  e.target.value = '';
 }
 
 const usePdf = async () => {
@@ -83,11 +103,18 @@ const usePdf = async () => {
     sidePrompt.value = prompt.value;
     loading.value = true;
     pdfsend.value = true;
+
+    spin.value = true;
+    sendicon.value = false;
     try {
       const res = await baseurl.post(`/pdf/pdf_interaction`, formdata, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       console.log(res.data)
+      formdata.delete('file');
+      prompt.value = ""
+      spin.value = false;
+      sendicon.value = true;
       noPrompt.value = false;
       promptedPage.value = true;
       loading.value = false;
@@ -98,9 +125,12 @@ const usePdf = async () => {
       answerspace.innerHTML = "";
       //@ts-ignore
       gsap.to(answerspace, { duration: 10, text: answerPrompt.value })
-      window.scrollTo(0, 0)
+      gsap.to(window, { duration: 1, scrollTo: document.body.scrollHeight });
+      pdftake.value = false;
     } catch (err: any) {
       console.log(err.message)
+      spin.value = false;
+      sendicon.value = true;
       noPrompt.value = false;
       promptedPage.value = true;
       answerPrompt.value = "An error Occured";
@@ -166,6 +196,12 @@ const savePDF = async () => {
     console.log(err.message)
     toastError("Couldn't download to pdf, try again.")
   }
+}
+
+const cancelPDF = () => {
+  formdata.delete('file');
+  pdfsend.value = false;
+  pdftake.value = false;
 }
 </script>
 
@@ -249,22 +285,39 @@ const savePDF = async () => {
     </div>
     <!-- end flex 1 -->
     <!-- flex 2 -->
-    <div class="flex-2 z-[100] fixed w-full bottom-0 px-[16px] md:px-[112px] pb-[44px] md:pb-[100px] bg-[#fff]">
+    <div class="flex-2 z-[100] fixed w-full bottom-0 px-[16px] md:px-[112px] pb-[20px] md:pb-[30px] bg-[#fff]">
       <div class="w-full">
         <div class="w-full flex items-center input rounded-[100px] border border-[#f1f1f3] py-[3px] pl-[13px] pr-[3px]">
-          <div class="w-fit"><img @click="triggerUpload" src="/landingpage/file.svg"
-              class="md:cursor-pointer hover:opacity-[0.7]" /></div>
+          <button @click="triggerUpload" class="w-fit bg-[transparent] focus:outline-none"><img
+              src="/landingpage/file.svg" class="md:cursor-pointer hover:opacity-[0.7]" /></button>
           <div class="w-[calc(100%-48px)] ml-[8px] md:ml-[18px]">
             <input v-model="prompt" placeholder="Hello, what can I do for you?" type="text"
               class="w-full text-[#667085] text-[12px] md:text-[14px] font-[400] leading-[normal] tracking-[-0.24px] focus:outline-none" />
           </div>
-          <div @click="submitPrompt"
-            class="sendicon w-[48px] h-[48px] rounded-[100px] border border-[#f1f1f3] p-[12px] md:py-[16px] md:px-[10px] md:cursor-pointer flex items-center justify-center">
-            <img src="/landingpage/send.svg" />
+          <button @click="submitPrompt"
+            class="sendicon w-[48px] h-[48px] rounded-[100px] border border-[#f1f1f3] p-[12px] md:py-[16px] md:px-[10px] md:cursor-pointer flex items-center justify-center focus:outline-none">
+            <img v-show="sendicon" src="/landingpage/send.svg" />
+            <div v-show="spin" class="w-[20px] h-[20px] mx-auto">
+              <img src="/spin.svg" class="w-full h-full spin" />
+            </div>
+          </button>
+        </div>
+      </div>
+      <!-- if pdf is selected -->
+      <div v-show="pdftake" class="mt-[10px] flex items-center space-x-[10px] w-fit">
+        <div class="flex pdflogo items-center justify-center w-[20px] h-[20px] rounded-[31.109px]">
+          <img draggable="false" src="/pdficonhome.svg" />
+        </div>
+        <div class="w-[calc(100%-42.931px)] text-[#101828] text-[12px] font-[500] leading-[normal] tracking-[-0.32px]">
+          {{ fileName }}
+          <div @click="cancelPDF" class="text-[#1E73BE] font-[700] md:cursor-pointer">
+            cancel
           </div>
         </div>
       </div>
-      <div class="hidden"><input @change="selectedFile" ref="fileInput" type="file" /></div>
+      <!-- end if pdf is selected -->
+      <div v-show="false"><input id="fileid" @change="selectedFile" ref="fileInput" type="file" />
+      </div>
     </div>
     <!-- end flex 2 -->
   </main>
@@ -318,5 +371,19 @@ const savePDF = async () => {
 .pdflogo {
   background: rgba(120, 171, 216, 0.10);
   box-shadow: 0px 0.622px 1.244px 0.622px rgba(30, 115, 190, 0.20) inset, 0px 0.311px 0.622px 0.311px rgba(0, 0, 0, 0.10);
+}
+
+.spin {
+  animation: 2s spin infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

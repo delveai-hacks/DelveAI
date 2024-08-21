@@ -38,6 +38,7 @@ const signup = async () => {
 
       setTimeout(() => {
         router.push('/verify-email');
+        window.scrollTo(0, 0)
       }, 1500)
     } catch (err: any) {
       text.value = true;
