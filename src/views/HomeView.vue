@@ -42,12 +42,16 @@ async function getPrompt() {
       answerspace.innerHTML = "";
       //@ts-ignore
       gsap.to(answerspace, { duration: 10, text: answerPrompt.value })
+      window.scrollTo(0, 0)
     } catch (err) {
       console.log(err);
       noPrompt.value = false;
       promptedPage.value = true;
       answerPrompt.value = "An error Occured";
+      //@ts-ignore
+      answerspace.innerHTML = "An error Occured";
       loading.value = false;
+      window.scrollTo(0, 0)
     }
   }
 }
@@ -89,12 +93,16 @@ const usePdf = async () => {
       answerspace.innerHTML = "";
       //@ts-ignore
       gsap.to(answerspace, { duration: 10, text: answerPrompt.value })
+      window.scrollTo(0, 0)
     } catch (err: any) {
       console.log(err.message)
       noPrompt.value = false;
       promptedPage.value = true;
       answerPrompt.value = "An error Occured";
+      //@ts-ignore
+      answerspace.innerHTML = "An error Occured";
       loading.value = false;
+      window.scrollTo(0, 0)
     }
   }
 }
@@ -125,11 +133,6 @@ const saveAudio = async () => {
     console.log(err.message)
   }
 }
-
-// const playAudiofText = async () => {
-//   //@ts-ignore
-//   responsiveVoice.speak(`${speakValue.value}`, "UK English Male", { volume: 1 }, { pitch: 2 }, { rate: 1.5 });
-// }
 </script>
 
 <template>
