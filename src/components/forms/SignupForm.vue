@@ -3,8 +3,13 @@ import baseurl from '@/api';
 import { toastError, toastSuccess } from '@/helper';
 import { onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue'
 
 const router = useRouter()
+
+const text = ref(true)
+const spin = ref(false)
+const button = ref(false)
 
 const user = reactive({
   fullname: "",
@@ -15,6 +20,9 @@ const user = reactive({
 
 const signup = async () => {
   if (user.fullname !== '' && user.email !== '' && user.password !== '' && user.repassword !== '' && user.password === user.repassword) {
+    text.value = false;
+    spin.value = true;
+    button.value = true;
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const res = await baseurl.post('/auth/signup', {
@@ -24,10 +32,17 @@ const signup = async () => {
       })
       toastSuccess('Successfully created your account')
       localStorage.setItem('email', user.email)
+      text.value = true;
+      spin.value = false;
+      button.value = false;
+
       setTimeout(() => {
         router.push('/verify-email');
       }, 1500)
     } catch (err: any) {
+      text.value = true;
+      spin.value = false;
+      button.value = false;
       toastError(err.message)
     }
   } else if (user.password !== user.repassword) {
@@ -99,9 +114,10 @@ onMounted(() => {
       By creating an account, you&apos;re agreeing to the terms and
       conditions of Delve AI
     </div>
-    <button @click="signup"
-      class="rounded-[10.658px] bg-[#1e73be] py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]">
-      Create account
+    <button @click="signup" :disabled="button"
+      :class='button ? "rounded-[10.658px] bg-gray-100 py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]" : "rounded-[10.658px] bg-[#1e73be] py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]"'>
+      <div v-show="text">Create account</div>
+      <div v-show="spin" class="w-[20px] h-[20px] mx-auto"><img src="/spin.svg" class="w-full h-full spin" /></div>
     </button>
     <div class="w-fit text-center mx-auto text-[#667085] text-[16px] font-[500] leading-[31px]">
       Have an account?
@@ -112,3 +128,19 @@ onMounted(() => {
     <!--  -->
   </div>
 </template>
+
+<style scoped>
+.spin {
+  animation: 2s spin infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>

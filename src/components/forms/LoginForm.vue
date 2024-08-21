@@ -3,7 +3,12 @@ import baseurl from '@/api';
 import { toastError, toastSuccess } from '@/helper';
 import { onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue'
 const router = useRouter()
+
+const text = ref(true)
+const spin = ref(false)
+const button = ref(false)
 
 const user = reactive({
   email: '',
@@ -12,6 +17,9 @@ const user = reactive({
 
 const login = async () => {
   if (user.email !== '' && user.password !== '') {
+    text.value = false;
+    spin.value = true;
+    button.value = true;
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const res = await baseurl.post('/auth/login', {
@@ -22,10 +30,17 @@ const login = async () => {
       localStorage.setItem('accessToken', res.data.access_token)
       localStorage.setItem('refreshToken', res.data.refresh_token)
 
+      text.value = true;
+      spin.value = false;
+      button.value = false;
+
       setTimeout(() => {
         router.push('/prompt')
       }, 1500)
     } catch (err: any) {
+      text.value = true;
+      spin.value = false;
+      button.value = false;
       toastError(err.message)
     }
   } else {
@@ -73,9 +88,10 @@ onMounted(() => {
       </div>
     </div>
     <!-- end forms -->
-    <button @click="login"
-      class="rounded-[10.658px] bg-[#1e73be] py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]">
-      Log in
+    <button @click="login" :disabled="button"
+      :class='button ? "rounded-[10.658px] bg-gray-100 py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]" : "rounded-[10.658px] bg-[#1e73be] py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]"'>
+      <div v-show="text">Log in</div>
+      <div v-show="spin" class="w-[20px] h-[20px] mx-auto"><img src="/spin.svg" class="w-full h-full spin" /></div>
     </button>
     <div class="w-fit text-center mx-auto text-[#667085] text-[16px] font-[500] leading-[31px]">
       Don&apos;t an account?
@@ -86,3 +102,19 @@ onMounted(() => {
     <!--  -->
   </div>
 </template>
+
+<style scoped>
+.spin {
+  animation: 2s spin infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>

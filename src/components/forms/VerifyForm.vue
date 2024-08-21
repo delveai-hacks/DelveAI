@@ -16,6 +16,12 @@ const inputtwo = ref("");
 const inputthree = ref("");
 const inputfour = ref("");
 
+const emailinuse = ref("") as any
+
+const text = ref(true)
+const spin = ref(false)
+const button = ref(false)
+
 const focusOne = () => {
   codeone.value.focus();
 };
@@ -63,6 +69,9 @@ const moveFour = () => {
 
 const verifyEmail = async () => {
   if (inputone.value !== '' && inputtwo.value !== '' && inputthree.value !== '' && inputfour.value !== '') {
+    text.value = false;
+    spin.value = true;
+    button.value = true;
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const res = await baseurl.post('/auth/verify', {
@@ -70,10 +79,17 @@ const verifyEmail = async () => {
         code: `${inputone.value}${inputtwo.value}${inputthree.value}${inputfour.value}`
       })
       toastSuccess('Successfully verified your account')
+      text.value = true;
+      spin.value = false;
+      button.value = false;
+
       setTimeout(() => {
         router.push('/login')
       }, 1500)
     } catch (err: any) {
+      text.value = true;
+      spin.value = false;
+      button.value = false;
       toastError('Error verifying your account.')
     }
   } else {
@@ -94,7 +110,8 @@ const resendCode = async () => {
 }
 
 onMounted(() => {
-  focusOne()
+  focusOne();
+  emailinuse.value = localStorage.getItem('email');
 })
 </script>
 
@@ -109,7 +126,7 @@ onMounted(() => {
     </div>
     <div
       class="text-[#667085] mb-[53px] text-center text-[16px] md:text-[20px] font-[500] leading-[normal] tracking-[-0.4px]">
-      We&apos;ve sent a code to <span class="text-[#1e73be]">prince.ojas38@gmail.com</span>
+      We&apos;ve sent a code to <span class="text-[#1e73be]">{{ emailinuse }}</span>
     </div>
     <!-- flex inputs -->
     <div class="w-fit mb-[58px] space-x-[5.6px] md:mx-auto md:w-fit mx-auto flex items-center">
@@ -131,9 +148,10 @@ onMounted(() => {
       </div>
     </div>
     <!-- end flex box inputs -->
-    <button @click="verifyEmail"
-      class="rounded-[10.658px] bg-[#1e73be] py-[6px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]">
-      Verify
+    <button @click="verifyEmail" :disabled="button"
+      :class='button ? "rounded-[10.658px] bg-gray-100 py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]" : "rounded-[10.658px] bg-[#1e73be] py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]"'>
+      <div v-show="text">Verify</div>
+      <div v-show="spin" class="w-[20px] h-[20px] mx-auto"><img src="/spin.svg" class="w-full h-full spin" /></div>
     </button>
     <div class="w-fit text-center mx-auto text-[#667085] text-[16px] font-[500] leading-[31px]">
       Having issues receiving code?
@@ -144,3 +162,19 @@ onMounted(() => {
     <!-- end verify button -->
   </div>
 </template>
+
+<style scoped>
+.spin {
+  animation: 2s spin infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
