@@ -26,7 +26,7 @@ const login = async () => {
         router.push('/prompt')
       }, 1500)
     } catch (err: any) {
-      toastError('Error accessing your account')
+      toastError(err.message)
     }
   } else {
     toastError('Fill in all the fields')
