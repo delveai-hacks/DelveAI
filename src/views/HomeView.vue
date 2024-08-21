@@ -5,6 +5,8 @@ import { TextPlugin } from 'gsap/TextPlugin';
 import { ref, onMounted } from "vue";
 import { marked } from 'marked';
 
+import { toastSuccess, toastError } from '@/helper';
+
 const prompt = ref("");
 const sidePrompt = ref("")
 const answerPrompt = ref("") as any;
@@ -129,8 +131,10 @@ const saveAudio = async () => {
       text: speakValue.value
     })
     console.log(res.data.message)
+    toastSuccess("Successfully downloaded answer to your downloads: output.mp3")
   } catch (err: any) {
     console.log(err.message)
+    toastError("Couldn't download to mp3, try again.")
   }
 }
 </script>
