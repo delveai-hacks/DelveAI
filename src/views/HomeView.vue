@@ -2,7 +2,7 @@
 import axios from "axios";
 import { ref } from "vue";
 import { marked } from 'marked';
-const api = "http://127.0.0.1:5000";
+const api = "https://delveai-backend.onrender.com";
 
 const prompt = ref("");
 const answerPrompt = ref("") as any;
