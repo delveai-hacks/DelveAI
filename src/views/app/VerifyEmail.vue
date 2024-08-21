@@ -11,7 +11,7 @@ import VerifyForm from '../../components/forms/VerifyForm.vue'
   </div>
   <!-- end first flex form -->
   <div
-   class="hidden md:block md:h-[600px] md:w-[calc(100%-488px)] border bg-[#fbf9f9] rounded-[24px] px-[24px] overflow-hidden">
+   class="hidden md:block md:h-fit md:w-[calc(100%-488px)] border bg-[#fbf9f9] rounded-[24px] px-[24px] overflow-hidden">
    <div
     class="text-[#101828] mb-[10] md:mb-[20px] md:w-fit md:mx-auto text-center text-[20px] md:text-[24px] font-[700] leading-[normal] tracking-[-0.4px] md:mt-[86px]">
     Convert text to speech
@@ -22,7 +22,7 @@ import VerifyForm from '../../components/forms/VerifyForm.vue'
     into natural-sounding speech and take your content
     with you wherever you are.
    </div>
-   <div class="w-full h-[149px] md:h-full rounded-[18px] overflow-hidden">
+   <div class="w-full md:h-full rounded-[18px] overflow-hidden">
     <img draggable="false" loading="lazy" src="/textphoneframe.png" class="w-full h-full" />
    </div>
   </div>
