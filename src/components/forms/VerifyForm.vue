@@ -20,13 +20,14 @@ const emailinuse = ref("") as any
 
 const text = ref(true)
 const spin = ref(false)
-const button = ref(false)
+const button = ref(true)
 
 const focusOne = () => {
   codeone.value.focus();
 };
 
 const moveOne = () => {
+  checkFields()
   if (inputone.value.length == 1) {
     codetwo.value.focus();
   } else {
@@ -35,6 +36,7 @@ const moveOne = () => {
 };
 
 const moveTwo = () => {
+  checkFields()
   if (inputtwo.value.length == 1) {
     codethree.value.focus();
   } else {
@@ -46,6 +48,7 @@ const moveTwo = () => {
 };
 
 const moveThree = () => {
+  checkFields()
   if (inputthree.value.length == 1) {
     codefour.value.focus();
   } else {
@@ -57,6 +60,7 @@ const moveThree = () => {
 };
 
 const moveFour = () => {
+  checkFields()
   if (inputfour.value.length == 1) {
     codefour.value.blur();
   } else {
@@ -66,6 +70,14 @@ const moveFour = () => {
     codethree.value.focus();
   }
 };
+
+const checkFields = () => {
+  if (inputone.value !== '' && inputtwo.value !== '' && inputthree.value !== '' && inputfour.value !== '') {
+    button.value = false;
+  } else {
+    button.value = true;
+  }
+}
 
 const verifyEmail = async () => {
   if (inputone.value !== '' && inputtwo.value !== '' && inputthree.value !== '' && inputfour.value !== '') {
@@ -148,7 +160,7 @@ onMounted(() => {
       </div>
     </div>
     <!-- end flex box inputs -->
-    <button @click="verifyEmail" :disabled="button"
+    <button @click="verifyEmail"
       :class='button ? "rounded-[10.658px] bg-gray-100 py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]" : "rounded-[10.658px] bg-[#1e73be] py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]"'>
       <div v-show="text">Verify</div>
       <div v-show="spin" class="w-[20px] h-[20px] mx-auto"><img src="/spin.svg" class="w-full h-full spin" /></div>

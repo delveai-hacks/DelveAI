@@ -9,7 +9,7 @@ const router = useRouter()
 
 const text = ref(true)
 const spin = ref(false)
-const button = ref(false)
+const button = ref(true)
 
 const user = reactive({
   fullname: "",
@@ -17,6 +17,14 @@ const user = reactive({
   password: "",
   repassword: ""
 })
+
+const checkFields = () => {
+  if (user.fullname !== '' && user.email !== '' && user.password !== '' && user.repassword !== '' && user.password === user.repassword) {
+    button.value = false;
+  } else {
+    button.value = true;
+  }
+}
 
 const signup = async () => {
   if (user.fullname !== '' && user.email !== '' && user.password !== '' && user.repassword !== '' && user.password === user.repassword) {
@@ -87,7 +95,7 @@ onMounted(() => {
         Full Name
       </div>
       <div class="w-full">
-        <input v-model="user.fullname" type="text" placeholder="Olivia Johnson"
+        <input @keyup="checkFields" v-model="user.fullname" type="text" placeholder="Olivia Johnson"
           class="w-full py-[10px] px-[14px] text-[#667085] text-[14px] font-[400] leading-[24px] bg-[#fff] rounded-[8px] border border-[#d0d5dd] focus:outline-none" />
       </div>
     </div>
@@ -96,7 +104,7 @@ onMounted(() => {
         Email
       </div>
       <div class="w-full">
-        <input v-model="user.email" type="text" placeholder="olivia@untitledui.com"
+        <input @keyup="checkFields" v-model="user.email" type="text" placeholder="olivia@untitledui.com"
           class="w-full py-[10px] px-[14px] text-[#667085] text-[14px] font-[400] leading-[24px] bg-[#fff] rounded-[8px] border border-[#d0d5dd] focus:outline-none" />
       </div>
     </div>
@@ -105,7 +113,7 @@ onMounted(() => {
         Password
       </div>
       <div class="w-full">
-        <input v-model="user.password" type="password" placeholder=""
+        <input @keyup="checkFields" v-model="user.password" type="password" placeholder=""
           class="w-full py-[10px] px-[14px] text-[#667085] text-[14px] font-[400] leading-[24px] bg-[#fff] rounded-[8px] border border-[#d0d5dd] focus:outline-none" />
       </div>
     </div>
@@ -114,7 +122,7 @@ onMounted(() => {
         Confirm Password
       </div>
       <div class="w-full">
-        <input v-model="user.repassword" type="password" placeholder=""
+        <input @keyup="checkFields" v-model="user.repassword" type="password" placeholder=""
           class="w-full py-[10px] px-[14px] text-[#667085] text-[14px] font-[400] leading-[24px] bg-[#fff] rounded-[8px] border border-[#d0d5dd] focus:outline-none" />
       </div>
     </div>
@@ -123,7 +131,7 @@ onMounted(() => {
       By creating an account, you&apos;re agreeing to the terms and
       conditions of Delve AI
     </div>
-    <button @click="signup" :disabled="button"
+    <button @click="signup"
       :class='button ? "rounded-[10.658px] bg-gray-100 py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]" : "rounded-[10.658px] bg-[#1e73be] py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]"'>
       <div v-show="text">Create account</div>
       <div v-show="spin" class="w-[20px] h-[20px] mx-auto"><img src="/spin.svg" class="w-full h-full spin" /></div>

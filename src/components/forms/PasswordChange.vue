@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import baseurl from '@/api';
+import { toastSuccess, toastError } from '@/helper';
+import { useRouter } from 'vue-router';
+const router = useRouter()
 
 const text = ref(true)
 const spin = ref(false)
@@ -17,10 +21,41 @@ const checkFields = () => {
   button.value = true;
  }
 }
+
+const resetPassword = async () => {
+ if ((user.password && user.repassword !== "") && (user.password === user.repassword)) {
+  text.value = false;
+  spin.value = true;
+  button.value = true;
+
+  try {
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   const res = await baseurl.put('/auth/change-password', {
+    email: localStorage.getItem('email'),
+    password: user.password
+   })
+   toastSuccess('Successfully reset your password')
+   text.value = true;
+   spin.value = false;
+   button.value = false;
+
+   setTimeout(() => {
+    router.push('/login')
+   }, 1500)
+  } catch (err: any) {
+   text.value = true;
+   spin.value = false;
+   button.value = false;
+   toastError('Error resetting your password.')
+  }
+ } else {
+  return null
+ }
+}
 </script>
 
 <template>
- <div class="w-full md:mt-[100px]">
+ <div class="w-full md:mt-[130px]">
   <div class="mb-[35px] md:mb-[29px]"><img draggable="false" src="/landingpage/logo.svg" /></div>
   <div
    class="text-[#101828] text-[20px] md:text-[28px] font-[700] tracking-[-0.4px] md:tracking-[-0.56px] mb-[8px] md:mb-[12px]">
@@ -50,7 +85,7 @@ const checkFields = () => {
    </div>
   </div>
   <!-- button -->
-  <button
+  <button @click="resetPassword"
    :class='button ? "rounded-[10.658px] bg-gray-100 py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]" : "rounded-[10.658px] bg-[#1e73be] py-[13px] justify-center text-center w-full text-[#fff] text-[16px] md:text-[18px] font-[500] leading-[31px] mb-[16px] md:mb-[20px]"'>
    <div v-show="text">Reset password</div>
    <div v-show="spin" class="w-[20px] h-[20px] mx-auto"><img src="/spin.svg" class="w-full h-full spin" /></div>
@@ -64,3 +99,19 @@ const checkFields = () => {
   <!-- end forms -->
  </div>
 </template>
+
+<style scoped>
+.spin {
+ animation: 2s spin infinite linear;
+}
+
+@keyframes spin {
+ 0% {
+  transform: rotate(0deg);
+ }
+
+ 100% {
+  transform: rotate(360deg);
+ }
+}
+</style>

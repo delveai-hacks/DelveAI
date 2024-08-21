@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import baseurl from '@/api';
+import axios from 'axios';
 import refreshAuth from '@/api/refreshToken';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
@@ -11,6 +12,9 @@ import { toastSuccess, toastError } from '@/helper';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
+
+const fullname = ref("")
+const avatarUrl = ref('');
 
 const prompt = ref("");
 const sidePrompt = ref("")
@@ -159,15 +163,30 @@ const getUserValid = async () => {
     const res = await baseurl.get(`/auth/me`, {
       headers: { 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
     })
+    fullname.value = res.data.fullname
+    getAvatar();
   } catch (err: any) {
     console.log(err.message);
     router.push('/login');
   }
 }
 
+const getAvatar = async () => {
+  try {
+    const res = await axios.get(`https://ui-avatars.com/api/?name=${fullname.value}&background=random`, {
+      responseType: 'blob'
+    });
+    avatarUrl.value = URL.createObjectURL(res.data);
+    console.log(avatarUrl.value)
+  } catch (err: any) {
+    console.log(err.message);
+  }
+};
+
 onMounted(() => {
   fileName.value = '';
   pdfsend.value = false;
+  fullname.value.replace(' ', '+');
   const answerspace = document.getElementById('answerspace') as any;
   console.log(answerspace)
   getUserValid();
@@ -236,7 +255,9 @@ const confirmLogOut = () => {
         <div><img draggable="false" src="/landingpage/logo.svg" /></div>
         <div class="flex items-center space-x-[20px] md:space-x-[32px]">
           <div class="w-[24px] h-[24px]"><img src="/landingpage/edit.svg" class="w-full h-full" /></div>
-          <div><img draggable="false" src="/landingpage/user.svg" /></div>
+          <div class="w-[32px] h-[32px] overflow-hidden bg-[#c4c4c4] rounded-full">
+            <img draggable="false" :src="avatarUrl" class="w-full h-full object-cover" />
+          </div>
           <div>
             <img @click="toggleLogOut" draggable="false" src="/logout.svg" class="md:cursor-pointer" />
           </div>
