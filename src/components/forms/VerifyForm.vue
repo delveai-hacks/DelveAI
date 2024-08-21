@@ -126,7 +126,7 @@ onMounted(() => {
     </div>
     <div
       class="text-[#667085] mb-[53px] text-center text-[16px] md:text-[20px] font-[500] leading-[normal] tracking-[-0.4px]">
-      We&apos;ve sent a code to <span class="text-[#1e73be]">{{ emailinuse }}</span>
+      We&apos;ve sent a code to <span class="text-[#1e73be]">{{ emailinuse || "example+214@gmail.com" }}</span>
     </div>
     <!-- flex inputs -->
     <div class="w-fit mb-[58px] space-x-[5.6px] md:mx-auto md:w-fit mx-auto flex items-center">

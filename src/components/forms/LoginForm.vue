@@ -59,6 +59,10 @@ const toTop = () => {
   window.scrollTo(0, 0)
 }
 
+const toResetPassword = () => {
+  router.push('/forgot-password')
+}
+
 onMounted(() => {
   toTop();
   removeTokens();
@@ -90,9 +94,16 @@ onMounted(() => {
       <div class="text-[#344054] text-[16px] font-[500] leading-[20px] mb-[6px]">
         Password
       </div>
-      <div class="w-full">
+      <div class="w-full mb-[24px]">
         <input v-model="user.password" type="password" placeholder=""
           class="w-full py-[10px] px-[14px] text-[#667085] text-[14px] font-[400] leading-[24px] bg-[#fff] rounded-[8px] border border-[#d0d5dd] focus:outline-none" />
+      </div>
+      <div class="flex items-center justify-between">
+        <div></div>
+        <div @click="toResetPassword"
+          class="text-[#1e73b3] text-[14px] font-[500] tracking-[-0.36px] md:cursor-pointer hover:underline">
+          Forgot password ?
+        </div>
       </div>
     </div>
     <!-- end forms -->

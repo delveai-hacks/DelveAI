@@ -8,6 +8,9 @@ import SignUp from "@/views/app/SignUp.vue";
 import LogIn from "@/views/app/LogIn.vue";
 //@ts-ignore
 import VerifyEmail from "@/views/app/VerifyEmail.vue";
+import PasswordEmail from "@/views/app/password/PasswordEmail.vue";
+import PasswordEmailVerify from "@/views/app/password/PasswordEmailVerify.vue";
+import NewPassword from "@/views/app/password/NewPassword.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +34,21 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LogIn,
+    },
+    {
+      path: "/forgot-password",
+      name: "passwordemail",
+      component: PasswordEmail,
+    },
+    {
+      path: "/forgot-password-verify",
+      name: "passwordemailverify",
+      component: PasswordEmailVerify,
+    },
+    {
+      path: "/new-password",
+      name: "newpassword",
+      component: NewPassword,
     },
     {
       path: "/prompt",
