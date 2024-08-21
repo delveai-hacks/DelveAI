@@ -28,7 +28,7 @@ const signup = async () => {
         router.push('/verify-email');
       }, 1500)
     } catch (err: any) {
-      toastError('Error creating your account')
+      toastError(err.message)
     }
   } else if (user.password !== user.repassword) {
     toastError('Password not the same, check again.')
