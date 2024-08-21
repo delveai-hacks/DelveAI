@@ -6,6 +6,9 @@ import { ref, onMounted } from "vue";
 import { marked } from 'marked';
 
 import { toastSuccess, toastError } from '@/helper';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 
 const prompt = ref("");
 const sidePrompt = ref("")
@@ -117,11 +120,24 @@ const submitPrompt = () => {
   }
 }
 
+const getUserValid = async () => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const res = await baseurl.get(`/auth/me`, {
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
+    })
+  } catch (err: any) {
+    console.log(err.message);
+    router.push('/login');
+  }
+}
+
 onMounted(() => {
   fileName.value = '';
   pdfsend.value = false;
   const answerspace = document.getElementById('answerspace') as any;
   console.log(answerspace)
+  getUserValid();
 })
 
 const saveAudio = async () => {
@@ -135,6 +151,20 @@ const saveAudio = async () => {
   } catch (err: any) {
     console.log(err.message)
     toastError("Couldn't download to mp3, try again.")
+  }
+}
+
+const savePDF = async () => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const res = await baseurl.post('/ai/save-pdf', {
+      text: speakValue.value
+    })
+    console.log(res.data.message)
+    toastSuccess("Successfully downloaded pdf to your downloads: output.pdf")
+  } catch (err: any) {
+    console.log(err.message)
+    toastError("Couldn't download to pdf, try again.")
   }
 }
 </script>
@@ -200,7 +230,7 @@ const saveAudio = async () => {
         <div v-if="loading"></div>
         <div v-else class="md:flex mb-[12px] md:items-baseline md:justify-around">
           <div class="md:flex w-full md:w-[70%] md:items-center space-y-[8px] md:space-y-[0px] md:space-x-[10px]">
-            <div
+            <div @click="savePDF"
               class="w-full bg-[#1373be] text-[#fff] text-[14px] font-[500] md:w-[40%] justify-center flex items-center space-x-[8px] py-[10px] rounded-[10px] md:cursor-pointer">
               <div class="w-fit h-fit"><img src="/ds.svg" /></div>
               <div>Download Summary</div>

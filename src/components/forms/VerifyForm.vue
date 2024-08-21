@@ -69,7 +69,7 @@ const verifyEmail = async () => {
         email: localStorage.getItem('email'),
         code: `${inputone.value}${inputtwo.value}${inputthree.value}${inputfour.value}`
       })
-      toastSuccess('Successfull verified your account')
+      toastSuccess('Successfully verified your account')
       setTimeout(() => {
         router.push('/login')
       }, 1500)
