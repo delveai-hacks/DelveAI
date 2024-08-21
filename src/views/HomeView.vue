@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import baseurl from '@/api';
+import refreshAuth from '@/api/refreshToken';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
@@ -168,6 +169,7 @@ onMounted(() => {
   const answerspace = document.getElementById('answerspace') as any;
   console.log(answerspace)
   getUserValid();
+  refreshTokens();
 })
 
 const saveAudio = async () => {
@@ -202,6 +204,13 @@ const cancelPDF = () => {
   formdata.delete('file');
   pdfsend.value = false;
   pdftake.value = false;
+}
+
+//refresh tokens on interval
+const refreshTokens = () => {
+  setInterval(() => {
+    refreshAuth();
+  }, 60000)
 }
 </script>
 

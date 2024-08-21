@@ -48,12 +48,20 @@ const login = async () => {
   }
 }
 
+const removeTokens = () => {
+  if (localStorage.getItem('accessToken') !== null && localStorage.getItem('refreshToken') !== null) {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  }
+}
+
 const toTop = () => {
   window.scrollTo(0, 0)
 }
 
 onMounted(() => {
   toTop();
+  removeTokens();
 })
 </script>
 
