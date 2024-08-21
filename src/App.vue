@@ -1,12 +1,21 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
+//@ts-ignore
+import AuthRefresh from './views/AuthRefresh.vue'
 </script>
 
 <template>
-  <RouterView />
+  <AuthRefresh>
+    <RouterView />
+  </AuthRefresh>
 </template>
 
 <style>
+@font-face {
+  font-family: "satoshi";
+  src: local("satoshi"), url("./fonts/Satoshi-Variable.ttf");
+}
+
 * {
   box-sizing: border-box;
 }
@@ -15,19 +24,27 @@ html {
   height: 100%;
 }
 
-body {
+body,
+main {
   min-height: 100%;
-  background: #343541;
-  font-family: "DM Sans", sans-serif;
+  font-family: satoshi;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-.header {
-  font-weight: 700;
-  font-size: 30px;
+body::-webkit-scrollbar {
+  width: 3px;
+  background: transparent;
+}
+
+body::-webkit-scrollbar-track {
   width: fit-content;
-  margin: 0 auto;
-  position: relative;
-  top: 120px;
+  background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  width: fit-content;
+  background: #1E73BE;
 }
 
 .input_container {
@@ -36,7 +53,7 @@ body {
 }
 
 .inter-tight {
-  font-family: "Inter Tight", sans-serif;
+  font-family: satoshi;
   font-optical-sizing: auto;
   font-style: normal;
 }

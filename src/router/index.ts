@@ -1,7 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 //@ts-ignore
-import SignUp from "../views/SignUp.vue";
+import LandingPage from "../views/home/LandingPage.vue";
+//@ts-ignore
+import SignUp from "@/views/app/SignUp.vue";
+//@ts-ignore
+import LogIn from "@/views/app/LogIn.vue";
+//@ts-ignore
+import VerifyEmail from "@/views/app/VerifyEmail.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,12 +15,27 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: HomeView,
+      component: LandingPage,
     },
     {
-      path: "/signup",
+      path: "/create-account",
       name: "signup",
       component: SignUp,
+    },
+    {
+      path: "/verify-email",
+      name: "email-verification",
+      component: VerifyEmail,
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: LogIn,
+    },
+    {
+      path: "/prompt",
+      name: "promptHome",
+      component: HomeView,
     },
     {
       path: "/about",
