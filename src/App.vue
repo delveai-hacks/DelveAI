@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { RouterLink, RouterView } from "vue-router";
 //@ts-ignore
 import AuthRefresh from './views/AuthRefresh.vue'

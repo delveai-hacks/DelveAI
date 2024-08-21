@@ -102,7 +102,7 @@ onMounted(() => {
       <div v-show="spin" class="w-[20px] h-[20px] mx-auto"><img src="/spin.svg" class="w-full h-full spin" /></div>
     </button>
     <div class="w-fit text-center mx-auto text-[#667085] text-[16px] font-[500] leading-[31px]">
-      Don&apos;t an account?
+      Don&apos;t have an account?
       <span class="text-[#1e73be] md:cursor-pointer">
         <router-link to="/create-account">Create one</router-link>
       </span>.

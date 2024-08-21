@@ -32,6 +32,8 @@ const sendicon = ref(true)
 
 const pdftake = ref(false)
 
+const logout = ref(false)
+
 const formdata = new FormData()
 gsap.registerPlugin(TextPlugin)
 gsap.registerPlugin(ScrollToPlugin);
@@ -212,6 +214,16 @@ const refreshTokens = () => {
     refreshAuth();
   }, 60000)
 }
+
+const toggleLogOut = () => {
+  logout.value = !logout.value
+}
+
+const confirmLogOut = () => {
+  router.push('/login');
+  window.scrollTo(0, 0);
+  localStorage.clear()
+}
 </script>
 
 <template>
@@ -225,10 +237,13 @@ const refreshTokens = () => {
         <div class="flex items-center space-x-[20px] md:space-x-[32px]">
           <div class="w-[24px] h-[24px]"><img src="/landingpage/edit.svg" class="w-full h-full" /></div>
           <div><img draggable="false" src="/landingpage/user.svg" /></div>
+          <div>
+            <img @click="toggleLogOut" draggable="false" src="/logout.svg" class="md:cursor-pointer" />
+          </div>
         </div>
       </div>
       <!-- after header no prompt yet -->
-      <div v-show="noPrompt" class="mt-[180px]">
+      <div v-show="noPrompt" class="mt-[300px] md:mt-[197px]">
         <div
           class="iconcircle mb-[12px] md:mb-[24px] flex items-center justify-center mx-auto p-[16px] md:p-[37px] w-[64px] h-[64px] md:w-[138px] md:h-[138px]">
           <div class="w-[32px] h-[32px] md:w-[64px] md:h-[64px]"><img src="/landingpage/circleicon.svg"
@@ -329,6 +344,29 @@ const refreshTokens = () => {
       </div>
     </div>
     <!-- end flex 2 -->
+    <!-- logout layout -->
+    <div v-show="logout"
+      class="fixed px-[23px] md:px-[0px] flex justify-center items-center z-[100] loglayout w-full top-0 h-full left-0 right-0">
+      <div
+        class="bg-[#fff] container rounded-t-[14px] rounded-bl-[14px] md:rounded-t-[20px] md:rounded-bl-[20px] w-full md:w-[60%] lg:w-[735px] md:mx-auto py-[16px] px-[12px] md:py-[30px] md:px-[16px]">
+        <div class="text-[#1e0306] text-[20px] md:text-[30px] font-[900] mb-[20px]">
+          Confirm logout
+        </div>
+        <div class="text-[#565656] text-[12px] md:text-[14px] font-[500] mb-[24px] md:mb-[30px]">
+          Are you sure you want to logout of your account?
+        </div>
+        <div class="flex w-full items-center space-x-[32px] md:space-x-[40px]">
+          <div @click="confirmLogOut"
+            class="w-fit text-[#fff] text-[10px] md:text-[14px] font-[700] rounded-t-[14px] rounded-bl-[14px] md:rounded-t-[20px] md:rounded-bl-[20px] p-[16.5px] md:p-[20px] bg-[#1E73BE] md:cursor-pointer">
+            Yes, confirm
+          </div>
+          <div @click="toggleLogOut" class="text-[#1e0306] text-[10px] md:text-[14px] font-[700] md:cursor-pointer">
+            Cancel
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end logout layout -->
   </main>
 </template>
 
@@ -394,5 +432,13 @@ const refreshTokens = () => {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.loglayout {
+  background: rgba(0, 0, 0, 0.50);
+}
+
+.container {
+  box-shadow: 0px 6px 55px 10px rgba(0, 0, 0, 0.06);
 }
 </style>
