@@ -11,7 +11,6 @@ import { marked } from 'marked';
 import { toastSuccess, toastError } from '@/helper';
 import { useRouter } from 'vue-router';
 
-//
 const router = useRouter()
 
 const fullname = ref("")
@@ -38,10 +37,19 @@ const sendicon = ref(true)
 const pdftake = ref(false)
 
 const logout = ref(false)
+const delvecheck = ref(false)
 
 const formdata = new FormData()
 gsap.registerPlugin(TextPlugin)
 gsap.registerPlugin(ScrollToPlugin);
+
+const openDCheck = () => {
+  delvecheck.value = true;
+}
+
+const closeDCheck = () => {
+  delvecheck.value = false;
+}
 
 async function getPrompt() {
   if (prompt.value.length >= 1) {
@@ -259,6 +267,16 @@ const confirmLogOut = () => {
           <div class="w-[32px] h-[32px] overflow-hidden bg-[#c4c4c4] rounded-full">
             <img draggable="false" :src="avatarUrl" class="w-full h-full object-cover" />
           </div>
+          <!-- delve check btn -->
+          <div @click="openDCheck"
+            class="flex w-fit h-fit md:w-fit md:h-fit items-center space-x-[4px] px-[10px] py-[10px] md:px-[14px] rounded-full md:rounded-[75.326px] bg-[#fff] border border-[#c4c4c4] md:cursor-pointer"
+            id="delve-check">
+            <div class="w-[16px] h-[16px]"><img class="w-full h-full object-contain" src="/eyeblue.svg" /></div>
+            <div class="hidden md:block text-[#667085] text-[16px] font-[500] tracking-[-0.32px]">
+              DelveCheck
+            </div>
+          </div>
+          <!-- end delve check btn -->
           <div>
             <img @click="toggleLogOut" draggable="false" src="/logout.svg" class="md:cursor-pointer" />
           </div>
@@ -389,6 +407,39 @@ const confirmLogOut = () => {
       </div>
     </div>
     <!-- end logout layout -->
+    <!-- delvecheck go layout -->
+    <div v-show="delvecheck"
+      class="delvecheck_layout flex items-center justify-center z-[200] w-full h-full left-0 fixed top-0 px-[16px] md:px-[0px]">
+      <!-- delve container -->
+      <div class="w-full md:w-[60%] lg:w-[540px] md:mx-auto bg-[#fff] rounded-[12px] p-[16px] md:p-[24px]">
+        <div class="w-full h-[232px] md:h-[200px] rounded-[8px] overflow-hidden bg-[#c4c4c4] mb-[20px]">
+          <img draggable="false" src="/mockupdelve.png" class="w-full h-full object-cover" />
+        </div>
+        <div class="text-[#1e73b3] text-center text-[18px] font-[700] leading-[28px] mb-[8px]">
+          Welcome to DelveCheck
+        </div>
+        <div class="text-[#475467] text-center text-[14px] font-[400] leading-[20px] mb-[12px]">
+          You're about to experience a smarter way to review your code. Delve Check is here to help you catch issues
+          early, and optimize your code — all powered by AWS Bedrock.
+        </div>
+        <div class="text-[#475467] text-[14px] font-[400] leading-[20px] mb-[32px]">
+          <div class="font-[700] mb-[8px]">How it works:</div>
+          <ul>
+            <li>Quick & Easy: Just submit your code, and Delve Check will analyze it in seconds.</li>
+            <li>Detailed Insights: Get feedback on potential errors, improvements, and best practices.</li>
+            <li>Continuous Learning: The more you use it, the smarter it gets.</li>
+          </ul>
+        </div>
+        <!-- continue button -->
+        <div @click="closeDCheck"
+          class="w-full button_shadow text-[#fff] text-[16px] font-[700] leading-[24px] text-center bg-[#1e73be] rounded-[8px] py-[10px] md:cursor-pointer">
+          Continue
+        </div>
+        <!-- end continue button -->
+      </div>
+      <!-- end delve container -->
+    </div>
+    <!-- end delvecheck go layout -->
   </main>
 </template>
 
@@ -462,5 +513,14 @@ const confirmLogOut = () => {
 
 .container {
   box-shadow: 0px 6px 55px 10px rgba(0, 0, 0, 0.06);
+}
+
+.delvecheck_layout {
+  background: rgba(16, 24, 40, 0.70);
+  backdrop-filter: blur(8px);
+}
+
+.button_shadow {
+  box-shadow: 0px 1px 2px 0px rgba(53, 53, 54, 0.804);
 }
 </style>
