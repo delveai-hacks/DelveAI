@@ -22,7 +22,7 @@ import PurposeHint from './PurposeHint.vue'
     </div>
     <!-- end button to try delve -->
     <div class="w-full h-[224.637px] md:w-[70%] lg:w-[982px] md:h-[752.5px] mx-auto">
-     <img src="/delvemockup.png" class="w-full h-full object-contain" />
+     <img draggable="false" src="/delvemockup.png" class="w-full h-full object-contain" />
     </div>
     <!-- end delve frame mockup -->
    </div>

@@ -57,7 +57,7 @@
    class="w-full h-fit md:h-fit overflow-y-hidden md:mx-auto md:w-[700px] lg:w-[1008px] rounded-[24px] pt-[24px] px-[0px] md:pt-[45px] md:px-[34px] bg-[#FBF9F9] mb-[41px] md:mb-[126px]">
    <div
     class="flex w-fit md:w-[437px] md:justify-center items-center mx-auto space-x-[8px] mb-[20px] px-[16px] md:px-[0px]">
-    <div><img src="/eyeblue.svg" /></div>
+    <div><img draggable="false" src="/eyeblue.svg" /></div>
     <div
      class="text-[#101828] text-center text-[20px] md:text-[32px] font-[700] tracking-[-0.4px] md:traking-[-0.64px]">
      DelveCheck - CodeReview
@@ -68,8 +68,8 @@
     Let DelveCheck help you find and fix code issues fast.
    </div>
    <div class="w-full h-[280px] md:h-[374px]">
-    <img src="/checkmockup.png" class="w-full h-full object-contain hidden md:block" />
-    <img src="/checkvtwo.png" class="w-full h-full object-contain md:hidden" />
+    <img draggable="false" src="/checkmockup.png" class="w-full h-full object-contain hidden md:block" />
+    <img draggable="false" src="/checkvtwo.png" class="w-full h-full object-contain md:hidden" />
    </div>
   </div>
   <!-- end delve check frame -->
