@@ -322,7 +322,7 @@ const confirmLogOut = () => {
             <div class="w-[12px] h-[12px] rounded-full bg-[#101828] loading"></div>
           </div>
           <div v-show="loading == false" id="answerspace"
-            class="questionspace text-[#101828] text-[14px] md:text-[17.172px] font-[500] leading-[normal] w-full md:w-[70%] py-[27px] px-[14px] text-left rounded-[12px] tracking-[-0.28px] h-fit">
+            class="questionspace text-[#101828] text-[14px] md:text-[17.172px] font-[500] leading-[normal] w-full md:w-[70%] py-[27px] px-[14px] text-left rounded-[12px] tracking-[-0.28px] h-fit break-words whitespace-normal select-text">
           </div>
           <div></div>
         </div>
