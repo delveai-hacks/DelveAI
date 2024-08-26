@@ -4,34 +4,29 @@ import PurposeHint from './PurposeHint.vue'
 </script>
 
 <template>
- <div class="pt-[120px] md:pt-[180px] lg:pt-[230px]">
+ <div class="pt-[120px] md:pt-[130px] lg:pt-[150px]">
   <div class="w-full mb-[0px] md:mb-[0px]">
-   <div class="w-full md:h-[70vh] lg:h-[73vh]">
+   <div class="w-full">
     <div class="w-full">
      <div
-      class="w-full md:w-[796px] mx-auto text-[#101828] text-[28px] text-center md:text-[42px] lg:text-[40px] font-[900] leading-[normal] tracking-[-0.56px] md:tracking-[-0.84px] mb-[24px] lg:uppercase">
-      Summarize PDFs, convert text to speech, and get answers to your questions with Delve AI.
+      class="w-full md:w-[796px] lg:w-[898px] mx-auto text-[#101828] text-[24px] md:text-center md:text-[42px] lg:text-[40px] font-[900] leading-[normal] tracking-[-0.56px] md:tracking-[-0.84px] mb-[24px] lg:uppercase">
+      Summarize PDFs, convert text to speech,
+      get answers to your questions and review your
+      codes with Delve AI.
      </div>
     </div>
+    <!-- button to try delve -->
     <div
-     class="w-[95%] z-[30] relative flex items-center justify-between mx-auto md:w-[497px] rounded-[8px] md:rounded-[13px] border border-[#F1F1F3] bg-[#fff] py-[3px] pl-[9px] md:pl-[14px] pr-[3px]">
-     <div class="text-[#667085] text-[12px] font-[500] leading-[20.845px]">
-      attach pdf, ask a question ...
-     </div>
-     <div class="flex items-center space-x-[8px]">
-      <div><img src="/landingpage/attach.svg" class="md:cursor-pointer" /></div>
-      <div
-       class="text-[#fff] text-[13px] font-[500] leading-[20.845px] py-[9px] px-[15px] bg-[#1E73BE] rounded-[6px] text-center md:cursor-pointer">
-       Try me
-      </div>
-     </div>
+     class="button_shadow text-[#fff] text-[14px] font-[700] leading-[31.975px] w-fit md:mx-auto rounded-[10.658px] bg-[#1e73be] py-[8px] px-[23.981px] md:cursor-pointer mb-[27px] md:mb-[0px]">
+     Try out Delve AI
     </div>
+    <!-- end button to try delve -->
+    <div class="w-full h-[224.637px] md:w-[70%] lg:w-[982px] md:h-[752.5px] mx-auto">
+     <img src="/delvemockup.png" class="w-full h-full object-contain" />
+    </div>
+    <!-- end delve frame mockup -->
    </div>
-   <!-- mobimage -->
-   <div class="w-full mt-[17px] md:hidden h-[250.698px] px-[6px]">
-    <img src="/landingpage/mobimage.png" class="w-full h-full" />
-   </div>
-   <!-- end mobimage -->
+   <!--  -->
   </div>
   <!-- our purpose -->
   <div class="mt-[135px] md:mt-[0px]">
@@ -48,3 +43,9 @@ import PurposeHint from './PurposeHint.vue'
   <!-- end our purpose -->
  </div>
 </template>
+
+<style scoped>
+.button_shadow {
+ box-shadow: 0px 1.332px 2.665px 0px rgba(16, 24, 40, 0.05);
+}
+</style>
