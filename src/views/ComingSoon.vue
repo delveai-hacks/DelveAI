@@ -11,7 +11,7 @@ const goBack = () => {
  <main class="bg-[#fff] px-[16px] md:px-[0px] flex justify-center items-center w-full min-h-[100vh]">
   <div class="w-full md:w-[570px] md:mx-auto">
    <div class="w-fit h-fit mx-auto md:cursor-pointer mb-[10px]">
-    <img @click="goBack" src="/back.svg" />
+    <img draggable="false" @click="goBack" src="/back.svg" />
    </div>
    <div
     class="text-[#1d1f16] text-center text-[30px] md:text-[42px] font-[700] md:leading-[42px] md:tracking-[-0.84px] mb-[18px]">
