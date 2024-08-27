@@ -13,6 +13,7 @@ import PasswordEmailVerify from "@/views/app/password/PasswordEmailVerify.vue";
 import NewPassword from "@/views/app/password/NewPassword.vue";
 
 import ErrorPage from "@/views/ErrorPage.vue";
+import ComingSoon from "@/views/ComingSoon.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +65,11 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/AboutView.vue"),
+    },
+    {
+      path: "/coming-soon",
+      name: "coming-soon",
+      component: ComingSoon,
     },
     {
       path: "/:pathMatch(.*)*",

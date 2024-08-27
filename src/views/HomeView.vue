@@ -49,6 +49,7 @@ const openDCheck = () => {
 
 const closeDCheck = () => {
   delvecheck.value = false;
+  router.push('/coming-soon');
 }
 
 async function getPrompt() {
@@ -419,7 +420,7 @@ const confirmLogOut = () => {
           Welcome to DelveCheck
         </div>
         <div class="text-[#475467] text-center text-[14px] font-[400] leading-[20px] mb-[12px]">
-          You're about to experience a smarter way to review your code, get temporary chats and faster load time. Delve
+          You're about to experience a smarter way to review your code, get permanent chats and faster load time. Delve
           Check is here to help you catch issues
           early, and optimize your code — all powered by AWS Bedrock.
         </div>
