@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 //@ts-ignore
 import PurposeHint from './PurposeHint.vue'
+
+const router = useRouter()
+
+const tryDelve = () => {
+ router.push('/create-account')
+}
 </script>
 
 <template>
@@ -16,7 +23,7 @@ import PurposeHint from './PurposeHint.vue'
      </div>
     </div>
     <!-- button to try delve -->
-    <div
+    <div @click="tryDelve"
      class="button_shadow text-[#fff] text-[14px] font-[700] leading-[31.975px] w-fit md:mx-auto rounded-[10.658px] bg-[#1e73be] py-[8px] px-[23.981px] md:cursor-pointer mb-[27px] md:mb-[0px]">
      Try out Delve AI
     </div>
