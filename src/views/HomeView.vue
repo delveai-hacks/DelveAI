@@ -8,7 +8,7 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ref, onMounted } from "vue";
 import { marked } from 'marked';
 
-import { toastSuccess, toastError } from '@/helper';
+import { toastError } from '@/helper';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
@@ -183,7 +183,7 @@ const getUserValid = async () => {
 
 const getAvatar = async () => {
   try {
-    const res = await axios.get(`https://ui-avatars.com/api/?name=${fullname.value}&background=random`, {
+    const res = await axios.get(`https://ui-avatars.com/api/?name=${fullname.value}&background=1E73BE&color=fff`, {
       responseType: 'blob'
     });
     avatarUrl.value = URL.createObjectURL(res.data);
@@ -208,9 +208,25 @@ const saveAudio = async () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const res = await baseurl.post('/ai/save-audio', {
       text: speakValue.value
-    })
+    }, { responseType: 'blob' })
     console.log(res.data.message)
-    toastSuccess("Successfully downloaded answer to your downloads: output.mp3")
+    const contentDisposition = res.headers['content-disposition'];
+    const filename = contentDisposition
+      ? contentDisposition.split('filename=')[1]?.replace(/"/g, '')
+      : 'download_audio_from_delve.mp3';
+
+    // Create a temporary URL for the blob
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   } catch (err: any) {
     console.log(err.message)
     toastError("Couldn't download to mp3, try again.")
@@ -222,9 +238,25 @@ const savePDF = async () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const res = await baseurl.post('/ai/save-pdf', {
       text: speakValue.value
-    })
+    }, { responseType: 'blob' })
     console.log(res.data.message)
-    toastSuccess("Successfully downloaded pdf to your downloads: output.pdf")
+    const contentDisposition = res.headers['content-disposition'];
+    const filename = contentDisposition
+      ? contentDisposition.split('filename=')[1]?.replace(/"/g, '')
+      : 'downloadfromdelve.pdf';
+
+    // Create a temporary URL for the blob
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   } catch (err: any) {
     console.log(err.message)
     toastError("Couldn't download to pdf, try again.")
@@ -259,7 +291,7 @@ const confirmLogOut = () => {
   <main class="bg-[#fff] flex flex-col min-h-[100vh]">
     <!-- flex 1 -->
     <div
-      class="border overflow-y-scroll flex-1 top-0 left-0 w-full bg-[#fff] pt-[24px] px-[16px] md:pt-[24px] md:px-[112px]">
+      class="border overflow-y-scroll flex-1 top-0 left-0 w-full bg-[#fff] pt-[24px] px-[16px] md:pt-[24px] md:px-[112px] cont">
       <div
         class="w-full pt-[20px] pb-[20px] flex items-center justify-between fixed top-0 bg-[#fff] left-0 px-[16px] md:px-[112px]">
         <div><img draggable="false" src="/landingpage/logo.svg" /></div>
@@ -297,7 +329,7 @@ const confirmLogOut = () => {
       </div>
       <!-- end after header no prompt yet -->
       <!-- propmt question and answer -->
-      <div class="w-full mt-[80px] md:mt-[120px] lg:mt-[150px] mb-[100px] md:mb-[160px] overflow-y-scroll"
+      <div class="w-full mt-[80px] md:mt-[120px] lg:mt-[150px] mb-[100px] md:mb-[160px] overflow-y-scroll cont"
         v-show="promptedPage">
         <!-- question show space -->
         <div class="flex mb-[30px] items-baseline justify-between md:justify-around">
@@ -446,6 +478,11 @@ const confirmLogOut = () => {
 </template>
 
 <style scoped>
+.cont::-webkit-scrollbar {
+  display: none;
+}
+
+
 .input {
   background: rgba(250, 250, 250, 0.00);
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.05);
